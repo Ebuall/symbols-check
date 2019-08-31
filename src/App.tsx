@@ -7,15 +7,18 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import { createMuiTheme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
-import Typography, { TypographyProps } from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
+import Typography, { TypographyProps } from "@material-ui/core/Typography";
+import { ThemeProvider } from "@material-ui/styles";
 import React from "react";
+import createPersistedState from "use-persisted-state";
 import "./App.css";
 import locales from "./locale.json";
 
@@ -90,15 +93,15 @@ const HighlightedText: React.FC<{ value: string; locale: Locale }> = ({
     }
   }
   return (
-    <Typography style={{ margin: 15, fontSize: "2rem" }}>
-      {groupedByType.map(chars => {
+    <Typography className="highlighted-text">
+      {groupedByType.map((chars, i) => {
         const type = getCharType(chars.charCodeAt(0));
         return (
-          <Tooltip title={locales[locale][type]}>
+          <Tooltip title={locales[locale][type]} key={i}>
             <Typography
               color={mapColors(type)}
               component="span"
-              style={{ fontSize: "inherit" }}
+              className="highlighted-text__entry"
             >
               {chars}
             </Typography>
@@ -109,37 +112,48 @@ const HighlightedText: React.FC<{ value: string; locale: Locale }> = ({
   );
 };
 
+const theme = createMuiTheme({ typography: { fontSize: 18 } });
+const useLocalStorage = createPersistedState("locale");
 const App: React.FC = () => {
-  const [locale, setLocale] = React.useState(getDefaultLocale());
-  const [text, setText] = React.useState("asdфыв123.\n-");
+  const [locale, setLocale_] = useLocalStorage(getDefaultLocale());
+  const [text, setText_] = React.useState("asdфыв123.\n-");
+  const setLocale = React.useMemo(() => targetValue(setLocale_), [setLocale_]);
+  const setText = React.useMemo(() => targetValue(setText_), [setText_]);
 
+  const localeDict = locales[locale];
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Grid container>
+      <Grid container className="App">
         <Grid item md={2} />
-        <Grid item md={8} xs={12}>
-          <Container className="App" maxWidth="xs">
-            <Card>
-              <CardHeader title={locales[locale].title} />
+        <Grid item md={8} xs={12} className="middle-column">
+          <Container maxWidth="sm">
+            <Card className="main-card">
+              <CardHeader
+                title={localeDict.title}
+                subheader={localeDict.description}
+              />
               <CardContent>
                 <TextField
-                  label={locales[locale].enterSymbols}
+                  label={localeDict.enterSymbols}
                   variant="outlined"
                   multiline
                   fullWidth
-                  onChange={targetValue(setText)}
+                  onChange={setText}
                   value={text}
+                  className="text-field"
                 />
                 <HighlightedText value={text} locale={locale} />
                 {!!text.length && (
                   <Table size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell>#</TableCell>
-                        <TableCell>char</TableCell>
-                        <TableCell>type</TableCell>
-                        <TableCell>code</TableCell>
+                        <TableCell>{localeDict["#"]}</TableCell>
+                        <TableCell>{localeDict.char}</TableCell>
+                        <TableCell>{localeDict.type}</TableCell>
+                        <Tooltip title="UTF-16 decimal">
+                          <TableCell>{localeDict.code}*</TableCell>
+                        </Tooltip>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -150,7 +164,12 @@ const App: React.FC = () => {
                             <TableCell>{i + 1}</TableCell>
                             <TableCell>{ch}</TableCell>
                             <TableCell>
-                              {locales[locale][getCharType(code)]}
+                              <Typography
+                                color={mapColors(getCharType(code))}
+                                component="span"
+                              >
+                                {localeDict[getCharType(code)]}
+                              </Typography>
                             </TableCell>
                             <TableCell>{code}</TableCell>
                           </TableRow>
@@ -167,8 +186,8 @@ const App: React.FC = () => {
           <RadioGroup
             name="locale"
             value={locale}
-            onChange={targetValue(setLocale)}
-            style={{ padding: 25 }}
+            onChange={setLocale}
+            className="language-select"
           >
             {localeList.map(entry => (
               <FormControlLabel
@@ -181,7 +200,7 @@ const App: React.FC = () => {
           </RadioGroup>
         </Grid>
       </Grid>
-    </>
+    </ThemeProvider>
   );
 };
 

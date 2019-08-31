@@ -2,19 +2,29 @@
   "ru": {
     "localeTitle": "Русский",
     "title": "Проверка символов",
+    "description": "Здесь вы можете проверить раскладку ввода каждого отдельного символа",
     "enterSymbols": "Копируйте сюда",
     "numeric": "цифра",
     "latin": "латиница",
     "cyrillic": "кириллица",
-    "other": "другое"
+    "other": "другое",
+    "#": "№",
+    "char": "символ",
+    "type": "тип",
+    "code": "код"
   },
   "en": {
     "localeTitle": "English",
     "title": "Check characters",
+    "description": "Here you can check if someone's name or message contains latin, cyrillic characters or something else",
     "enterSymbols": "Paste here",
     "numeric": "numeric",
     "latin": "latin",
     "cyrillic": "cyrillic",
-    "other": "other"
+    "other": "other",
+    "#": "#",
+    "char": "char",
+    "type": "type",
+    "code": "code"
   }
 }

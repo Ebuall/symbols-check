@@ -1,3 +1,28 @@
 .App {
-  margin-top: 25px;
+  margin-top: 30px;
+}
+
+#root .middle-column {
+  margin-bottom: 30px;
+}
+
+.language-select {
+  margin: 0 0 30px 30px;
+}
+
+.main-card {
+  padding: 30px;
+}
+
+#root .text-field {
+  margin-top: 32px;
+}
+
+#root .highlighted-text {
+  margin: 18px 10px 42px;
+  font-size: 1.3em;
+  word-wrap: break-word;
+}
+#root .highlighted-text__entry {
+  font-size: inherit;
 }
