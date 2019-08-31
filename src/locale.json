@@ -1,0 +1,20 @@
+{
+  "ru": {
+    "localeTitle": "Русский",
+    "title": "Проверка символов",
+    "enterSymbols": "Копируйте сюда",
+    "numeric": "цифра",
+    "latin": "латиница",
+    "cyrillic": "кириллица",
+    "other": "другое"
+  },
+  "en": {
+    "localeTitle": "English",
+    "title": "Check characters",
+    "enterSymbols": "Paste here",
+    "numeric": "numeric",
+    "latin": "latin",
+    "cyrillic": "cyrillic",
+    "other": "other"
+  }
+}
