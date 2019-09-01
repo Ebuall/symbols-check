@@ -116,7 +116,7 @@ const theme = createMuiTheme({ typography: { fontSize: 18 } });
 const useLocalStorage = createPersistedState("locale");
 const App: React.FC = () => {
   const [locale, setLocale_] = useLocalStorage(getDefaultLocale());
-  const [text, setText_] = React.useState("asdфыв123.\n-");
+  const [text, setText_] = React.useState("");
   const setLocale = React.useMemo(() => targetValue(setLocale_), [setLocale_]);
   const setText = React.useMemo(() => targetValue(setText_), [setText_]);
 
