@@ -143,40 +143,43 @@ const App: React.FC = () => {
                   value={text}
                   className="text-field"
                 />
-                <HighlightedText value={text} locale={locale} />
                 {!!text.length && (
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>{localeDict["#"]}</TableCell>
-                        <TableCell>{localeDict.char}</TableCell>
-                        <TableCell>{localeDict.type}</TableCell>
-                        <Tooltip title="UTF-16 decimal">
-                          <TableCell>{localeDict.code}*</TableCell>
-                        </Tooltip>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {text.split("").map((ch, i) => {
-                        const code = ch.charCodeAt(0);
-                        return (
-                          <TableRow key={i}>
-                            <TableCell>{i + 1}</TableCell>
-                            <TableCell>{ch}</TableCell>
-                            <TableCell>
-                              <Typography
-                                color={mapColors(getCharType(code))}
-                                component="span"
-                              >
-                                {localeDict[getCharType(code)]}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>{code}</TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
+                  <>
+                    <HighlightedText value={text} locale={locale} />
+                    <hr></hr>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>{localeDict["#"]}</TableCell>
+                          <TableCell>{localeDict.char}</TableCell>
+                          <TableCell>{localeDict.type}</TableCell>
+                          <Tooltip title="UTF-16 decimal">
+                            <TableCell>{localeDict.code}*</TableCell>
+                          </Tooltip>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {text.split("").map((ch, i) => {
+                          const code = ch.charCodeAt(0);
+                          return (
+                            <TableRow key={i}>
+                              <TableCell>{i + 1}</TableCell>
+                              <TableCell>{ch}</TableCell>
+                              <TableCell>
+                                <Typography
+                                  color={mapColors(getCharType(code))}
+                                  component="span"
+                                >
+                                  {localeDict[getCharType(code)]}
+                                </Typography>
+                              </TableCell>
+                              <TableCell>{code}</TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </>
                 )}
               </CardContent>
             </Card>

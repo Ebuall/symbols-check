@@ -2,12 +2,14 @@
   "name": "symbols-check",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Ebuall.github.io/symbols-check",
   "dependencies": {
     "@material-ui/core": "^4.4.0",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.3",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
+    "gh-pages": "^2.1.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1",
@@ -15,6 +17,8 @@
     "use-persisted-state": "^0.3.0"
   },
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
