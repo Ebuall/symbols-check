@@ -18,6 +18,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { ThemeProvider } from "@material-ui/styles";
 import React from "react";
+import { Helmet } from "react-helmet";
 import createPersistedState from "use-persisted-state";
 import "./App.css";
 import { HighlightedText } from "./HighlightedText";
@@ -30,7 +31,7 @@ function getDefaultLocale() {
   if (localeList.includes(locale)) {
     return locale as Locale;
   }
-  return "ru";
+  return "en";
 }
 
 const targetValue = (f: (val: any) => void) => (ev: any) => {
@@ -50,6 +51,10 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Helmet>
+        <title>{localeDict.title}</title>
+        <meta name="description" content={localeDict.description} />
+      </Helmet>
       <Grid container className="App">
         <Grid item md={2} />
         <Grid item md={8} xs={12} className="middle-column">
