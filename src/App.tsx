@@ -15,16 +15,16 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
-import Typography, { TypographyProps } from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
 import { ThemeProvider } from "@material-ui/styles";
 import React from "react";
 import createPersistedState from "use-persisted-state";
 import "./App.css";
+import { HighlightedText } from "./HighlightedText";
 import locales from "./locale.json";
+import { getCharType, Locale, mapColors } from "./utils";
 
-type Locale = keyof typeof locales;
 const localeList = Object.keys(locales) as Locale[];
-
 function getDefaultLocale() {
   const locale: any = (navigator.language || "").slice(0, 2);
   if (localeList.includes(locale)) {
@@ -33,87 +33,13 @@ function getDefaultLocale() {
   return "ru";
 }
 
-function ascOrEq(...numbers: number[]) {
-  for (let i = 0; i < numbers.length - 1; i++) {
-    if (!(numbers[i] <= numbers[i + 1])) return false;
-  }
-  return true;
-}
-function getCharType(code: number) {
-  if (ascOrEq(49, code, 57)) {
-    return "numeric";
-  }
-  if (ascOrEq(65, code, 90)) {
-    return "latin";
-  }
-  if (ascOrEq(97, code, 122)) {
-    return "latin";
-  }
-  if (ascOrEq(1040, code, 1103)) {
-    return "cyrillic";
-  }
-  return "other";
-}
-
 const targetValue = (f: (val: any) => void) => (ev: any) => {
   return f(ev.target.value);
 };
 
-function mapColors(
-  type: ReturnType<typeof getCharType>,
-): TypographyProps["color"] {
-  switch (type) {
-    case "latin":
-      return "textPrimary";
-    case "cyrillic":
-      return "textSecondary";
-    case "numeric":
-      return "primary";
-    default:
-      return "error";
-  }
-}
-
-const HighlightedText: React.FC<{ value: string; locale: Locale }> = ({
-  value,
-  locale,
-}) => {
-  if (value.length < 1) return null;
-
-  const groupedByType = [value[0]];
-  for (let i = 1; i < value.length; i++) {
-    const last = groupedByType.length - 1;
-    if (
-      getCharType(value[i].charCodeAt(0)) ===
-      getCharType(groupedByType[last].charCodeAt(0))
-    ) {
-      groupedByType[last] = groupedByType[last] + value[i];
-    } else {
-      groupedByType.push(value[i]);
-    }
-  }
-  return (
-    <Typography className="highlighted-text">
-      {groupedByType.map((chars, i) => {
-        const type = getCharType(chars.charCodeAt(0));
-        return (
-          <Tooltip title={locales[locale][type]} key={i}>
-            <Typography
-              color={mapColors(type)}
-              component="span"
-              className="highlighted-text__entry"
-            >
-              {chars}
-            </Typography>
-          </Tooltip>
-        );
-      })}
-    </Typography>
-  );
-};
-
 const theme = createMuiTheme({ typography: { fontSize: 18 } });
 const useLocalStorage = createPersistedState("locale");
+
 const App: React.FC = () => {
   const [locale, setLocale_] = useLocalStorage(getDefaultLocale());
   const [text, setText_] = React.useState("");
